@@ -17,7 +17,7 @@
                         <h1>Calculadora de Dias Úteis</h1>
                         <p>Insira a seguir uma data de inicio e outra de fim para que possa calcular quantos dias úteis entre essas datas.</p>
                     </div>
-                    <form id="form">
+                    <form id="form" class="formulario">
                         <div class="container--input">
                             <label for="data--inicial">Data Inicial:</label>
                             <input type="date" name="data--inicial" id="data--inicial">
@@ -27,7 +27,24 @@
                             <input type="date" name="data--final" id="data--final">
                         </div>
                         <button type="submit">Calcular</button>
+                        <button type="button">Adicionar Feriado</button>
                     </form>
+
+                    <!-- Modal para adicionar Feriados -->
+                    <div class="container--modal">
+                        <form id="form--modal" class="formulario">
+                            <div class="container--texto">
+                                <p>Insira a seguir seus feriados nacionais (que só ocorram na sua cidade/estado).</p>
+                            </div>
+                            <div class="container--input">
+                                <label for="feriado--regional">Data do Feriado Regional:</label>
+                                <input type="date" name="feriado--regional" id="feriado--regional">
+                            </div>
+                            <button type="submit">Adiconar Feriado</button>
+                        </form>
+                        <div id="res--modal" class="container--res"></div>
+                    </div>
+
                     <div id="res" class="container--res">
                     </div>
                 </div>
