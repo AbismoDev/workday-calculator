@@ -1,4 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+    const feriadosNacionais = [
+        {dia: 1, mes: 1, nome_feriado: "Confraternização Universal"},
+        {dia: 18, mes: 4, nome_feriado: "Paixão de Cristo"},
+        {dia: 21, mes: 4, nome_feriado: "Tiradentes"},
+        {dia: 1, mes: 5, nome_feriado: "Dia do Trabalho"},
+        {dia: 7, mes: 9, nome_feriado: "Independência do Brasil"},
+        {dia: 12, mes: 10, nome_feriado: "Nossa Senhora Aparecida"},
+        {dia: 2, mes: 11, nome_feriado: "Finados"},
+        {dia: 15, mes: 11, nome_feriado: "Proclamação da República"},
+        {dia: 20, mes: 11, nome_feriado: "Dia Nacional de Zumbi e da Consciência Negra"},
+        {dia: 25, mes: 12, nome_feriado: "Natal"},
+    ];
+
+    // Se o usuario inserir uma data de feriado que já existe na de nacional, podemos exibir que aquele feriado já existe 
+    // e se for igual algum que ele colocou tbm, já existe.
+    let feriadosRegionais = [];
+
     const form = document.querySelector("#form");
     const res = document.querySelector("#res");
 
@@ -38,18 +56,24 @@ document.addEventListener("DOMContentLoaded", () => {
         let dataCorrente = dataInicial;
 
         let diasUteis = 0;
+        let feriado = 0;
 
         while(dataCorrente <= dataFinal) {
             if(dataCorrente.getDay() > 0 && dataCorrente.getDay() < 6){
-                diasUteis++;                
-            }
+                for(let i = 0; i < feriadosNacionais.length; i++) {  
+                    if(dataCorrente.getDate() === feriadosNacionais[i].dia && dataCorrente.getMonth() === feriadosNacionais[i].mes){
+                        feriado++;
+                    }    
+                }                         
+                diasUteis++;
+            }      
 
             dataCorrente.setDate(dataCorrente.getDate() + 1);
         }
 
         res.innerHTML = `
             <div class="container--solucao sucesso">
-                <p>Da data ${dataInicialFormatada} até data ${dataFinalFormatada}, tem ${diasUteis} dias úteis</p>
+                <p>Da data ${dataInicialFormatada} até data ${dataFinalFormatada}, tem ${diasUteis - feriado} dias úteis</p>
             </div>
         `;
 
