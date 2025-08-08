@@ -71,12 +71,13 @@
     width: 100%;
 }
 
-.container--app form button {
+.formulario button {
     background-color: #385a64;
     border-radius: 5px;
     max-width: 200px;
     font-weight: 600;
     font-size: 16px;
+    transition: .3s;
     cursor: pointer;
     color: white;
     height: 35px;
@@ -87,11 +88,36 @@
 .container--modal {
     border: 3px solid #385a64;
     background-color: white;
+    flex-direction: column;
     border-radius: 10px;
     position: absolute;
     max-width: 600px;
-    width: 100%;
     padding: 20px;
+    width: 100%;
+    display: flex;
+    gap: 20px;
+}
+
+.container--close {
+    text-align: right;
+    width: 100%;
+}
+
+.container--close button {
+    background-color: #385a64;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: .3s;
+    cursor: pointer;
+    font-size: 22px;
+    color: white;
+    border: none;
+    width: 30px;
+}
+
+.container--close button:hover,
+.formulario button:hover {
+    transform: scale(.955);
 }
 
 .container--res {
