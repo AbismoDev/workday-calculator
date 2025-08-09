@@ -27,17 +27,21 @@
                             <input type="date" name="data--final" id="data--final">
                         </div>
                         <button type="submit">Calcular</button>
-                        <button type="button">Adicionar Feriado</button>
+                        <button type="button" id="btn--openModal">Adicionar Feriado</button>
                     </form>
 
                     <!-- Modal para adicionar Feriados -->
-                    <div class="container--modal">
+                    <div class="container--modal" id="modal">
                         <div class="container--close">
-                            <button>X</button>
+                            <button id="close--modal">X</button>
                         </div>
                         <form id="form--modal" class="formulario">
                             <div class="container--texto">
                                 <p>Insira a seguir seus feriados nacionais (que só ocorram na sua cidade/estado).</p>
+                            </div>
+                            <div class="container--input">
+                                <label for="nome--feriado--regional">Nome do Feriado Regional:</label>
+                                <input type="text" name="nome--feriado--regional" id="nome--feriado--regional">
                             </div>
                             <div class="container--input">
                                 <label for="feriado--regional">Data do Feriado Regional:</label>
