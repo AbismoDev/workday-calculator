@@ -16,11 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const form = document.querySelector("#form");
     const formModal = document.querySelector("#form--modal");
     const btnOpenModal = document.querySelector("#btn--openModal");
-    const res = document.querySelector("#res");
-
+    let msg;
+    
     form.addEventListener("submit", (e) => {
         e.preventDefault();
-
+        
+        const res = document.querySelector("#res");
         const inputDataInicial = document.querySelector("#data--inicial");
         const inputDataFinal = document.querySelector("#data--final");
 
@@ -28,53 +29,20 @@ document.addEventListener("DOMContentLoaded", () => {
         const valorDataFinal = inputDataFinal.value;
 
         if(valorDataInicial >= valorDataFinal || (valorDataInicial && valorDataFinal === "")) {
-            // Erro
-            res.innerHTML = `
-                <div class="container--solucao falha">
-                    <p>Insira uma Data Inicial e uma Data Final!</p>
-                </div>
-            `;
+            msg = `Insira uma Data Inicial e uma Data Final!`;
+            res.innerHTML = exibirMensagem(msg, "falha");
             return;
         }
 
         const dataInicial = new Date(valorDataInicial + "T00:00:00");
         const dataFinal = new Date(valorDataFinal + "T00:00:00");
 
-        // Vamos fazer uma formatação de data para a exibição
-        const diaInicialFormatado = (dataInicial.getDate() < 10) ? `0${dataInicial.getDate()}` : dataInicial.getDate();
-        const mesInicialFormatado = ((dataInicial.getMonth() + 1) < 10) ? `0${(dataInicial.getMonth() + 1)}` : (dataInicial.getMonth() + 1);
-        const anoInicialFormatado = dataInicial.getFullYear();
-        const dataInicialFormatada = `${diaInicialFormatado}/${mesInicialFormatado}/${anoInicialFormatado}`;
+        const dataInicialFormatada = formataData(dataInicial);
+        const dataFinalFormatada = formataData(dataFinal)
+        const diasUteis = contarDiasUteis(dataInicial, dataFinal);
 
-        const diaFinalFormatado = (dataFinal.getDate() < 10) ? `0${dataFinal.getDate()}` : dataFinal.getDate();
-        const mesFinalFormatado = ((dataFinal.getMonth() + 1) < 10) ? `0${(dataFinal.getMonth() + 1)}` : (dataFinal.getMonth() + 1);
-        const anoFinalFormatado = dataFinal.getFullYear();
-        const dataFinalFormatada = `${diaFinalFormatado}/${mesFinalFormatado}/${anoFinalFormatado}`;
-
-        let dataCorrente = dataInicial;
-
-        let diasUteis = 0;
-        let feriado = 0;
-
-        console.log("lista de feriados antes do loop: ", listaFeriados);
-
-        while(dataCorrente <= dataFinal) {
-            if(dataCorrente.getDay() > 0 && dataCorrente.getDay() < 6){
-                for(let i = 0; i < listaFeriados.length; i++) {  
-                    if(dataCorrente.getDate() === listaFeriados[i].dia && (dataCorrente.getMonth() + 1) === listaFeriados[i].mes){
-                        feriado++;
-                    } 
-                }                         
-                diasUteis++;
-            }      
-            dataCorrente.setDate(dataCorrente.getDate() + 1);
-        }
-
-        res.innerHTML = `
-            <div class="container--solucao sucesso">
-                <p>Da data ${dataInicialFormatada} até data ${dataFinalFormatada}, tem ${diasUteis - feriado} dias úteis</p>
-            </div>
-        `;
+        msg = `Da data ${dataInicialFormatada} até data ${dataFinalFormatada}, tem ${diasUteis} dias úteis`;
+        res.innerHTML = exibirMensagem(msg, "sucesso");
 
     });
 
@@ -109,19 +77,50 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if(!feriadoIgual) {
             listaFeriados.push({dia: diaFeriado, mes: mesFeriado, nome_feriado: valorNomeFeriado});
-            resModal.innerHTML = `
-                <div class="container--solucao sucesso">
-                    <p>Feriado regional adicionado em nossa lista!</p>
-                </div>    
-            `;
+            msg = `Feriado regional adicionado em nossa lista!`;
+            resModal.innerHTML = exibirMensagem(msg, "sucesso");
             return;
         }
         
-        resModal.innerHTML = `
-            <div class="container--solucao falha">
-                <p>Feriado já existe em nossa lista!</p>
-            </div>
-        `;
+        msg = `Feriado já existe em nossa lista!`;
+        resModal.innerHTML = exibirMensagem(msg, "falha");
         
     });
+
+    function exibirMensagem(msg, tipoMensagem) {
+        return `
+            <div class="container--solucao ${tipoMensagem}">
+                <p>${msg}</p>
+            </div>
+        `;
+    }
+
+    function contarDiasUteis(dataCorrente, dataFinal) {
+        let diasUteis = 0;
+        let feriado = 0;
+
+        while(dataCorrente <= dataFinal) {
+            if(dataCorrente.getDay() > 0 && dataCorrente.getDay() < 6){
+                for(let i = 0; i < listaFeriados.length; i++) {  
+                    if(dataCorrente.getDate() === listaFeriados[i].dia && (dataCorrente.getMonth() + 1) === listaFeriados[i].mes){
+                        feriado++;
+                    } 
+                }                         
+                diasUteis++;
+            }      
+            dataCorrente.setDate(dataCorrente.getDate() + 1);
+        }
+
+        return diasUteis - feriado;
+    }
+
+    function formataData(data) {
+        const diaFormatado = (data.getDate() < 10) ? `0${data.getDate()}` : data.getDate();
+        const mesFormatado = ((data.getMonth() + 1) < 10) ? `0${(data.getMonth() + 1)}` : (data.getMonth() + 1);
+        const anoFormatado = data.getFullYear();
+        const dataFormatada = `${diaFormatado}/${mesFormatado}/${anoFormatado}`;
+
+        return dataFormatada;
+    }
+
 });
