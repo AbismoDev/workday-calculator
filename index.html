@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <title>Calcula Dias Úteis</title>
+</head>
+<body>
+    <main>
+        <section>
+            <div class="container">
+                <div class="container--app">
+                    <div class="container--texto">
+                        <h1>Calculadora de Dias Úteis</h1>
+                        <p>Insira a seguir uma data de inicio e outra de fim para que possa calcular quantos dias úteis entre essas datas.</p>
+                    </div>
+                    <form id="form" class="formulario">
+                        <div class="container--input">
+                            <label for="data--inicial">Data Inicial:</label>
+                            <input type="date" name="data--inicial" id="data--inicial">
+                        </div>
+                        <div class="container--input">
+                            <label for="data--final">Data Final:</label>
+                            <input type="date" name="data--final" id="data--final">
+                        </div>
+                        <button type="submit">Calcular</button>
+                        <button type="button" id="btn--openModal">Adicionar Feriado</button>
+                    </form>
+
+                    <!-- Modal para adicionar Feriados -->
+                    <div class="container--modal" id="modal">
+                        <div class="container--close">
+                            <button id="close--modal">X</button>
+                        </div>
+                        <form id="form--modal" class="formulario">
+                            <div class="container--texto">
+                                <p>Insira a seguir seus feriados nacionais (que só ocorram na sua cidade/estado).</p>
+                            </div>
+                            <div class="container--input">
+                                <label for="nome--feriado--regional">Nome do Feriado Regional:</label>
+                                <input type="text" name="nome--feriado--regional" id="nome--feriado--regional">
+                            </div>
+                            <div class="container--input">
+                                <label for="feriado--regional">Data do Feriado Regional:</label>
+                                <input type="date" name="feriado--regional" id="feriado--regional">
+                            </div>
+                            <button type="submit">Adiconar Feriado</button>
+                        </form>
+                        <div id="res--modal" class="container--res"></div>
+                    </div>
+
+                    <div id="res" class="container--res">
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="assets/js/index.js"></script>
+</body>
+</html>
