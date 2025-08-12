@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const feriadosNacionais = [
+    const listaFeriados = [
         {dia: 1, mes: 1, nome_feriado: "Confraternização Universal"},
         {dia: 18, mes: 4, nome_feriado: "Paixão de Cristo"},
         {dia: 21, mes: 4, nome_feriado: "Tiradentes"},
@@ -13,11 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
         {dia: 25, mes: 12, nome_feriado: "Natal"},
     ];
 
-    // Se o usuario inserir uma data de feriado que já existe na de nacional, podemos exibir que aquele feriado já existe 
-    // e se for igual algum que ele colocou tbm, já existe.
-    let feriadosRegionais = [];
-
     const form = document.querySelector("#form");
+    const formModal = document.querySelector("#form--modal");
+    const btnOpenModal = document.querySelector("#btn--openModal");
     const res = document.querySelector("#res");
 
     form.addEventListener("submit", (e) => {
@@ -58,16 +56,17 @@ document.addEventListener("DOMContentLoaded", () => {
         let diasUteis = 0;
         let feriado = 0;
 
+        console.log("lista de feriados antes do loop: ", listaFeriados);
+
         while(dataCorrente <= dataFinal) {
             if(dataCorrente.getDay() > 0 && dataCorrente.getDay() < 6){
-                for(let i = 0; i < feriadosNacionais.length; i++) {  
-                    if(dataCorrente.getDate() === feriadosNacionais[i].dia && dataCorrente.getMonth() === feriadosNacionais[i].mes){
+                for(let i = 0; i < listaFeriados.length; i++) {  
+                    if(dataCorrente.getDate() === listaFeriados[i].dia && (dataCorrente.getMonth() + 1) === listaFeriados[i].mes){
                         feriado++;
-                    }    
+                    } 
                 }                         
                 diasUteis++;
             }      
-
             dataCorrente.setDate(dataCorrente.getDate() + 1);
         }
 
@@ -77,5 +76,52 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
 
+    });
+
+    btnOpenModal.addEventListener("click", () => {
+        const modal = document.querySelector("#modal");
+        const btnCloseModal = document.querySelector("#close--modal"); 
+        modal.style.display = "flex";
+        btnCloseModal.addEventListener("click", () => modal.style.display = "none");
+    });
+
+    formModal.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const resModal = document.querySelector("#res--modal");
+
+        const inputNomeFeriado = document.querySelector("#nome--feriado--regional");
+        const inputDataFeriado = document.querySelector("#feriado--regional");
+        const valorNomeFeriado = inputNomeFeriado.value;
+        const valorDataFeriado = inputDataFeriado.value;
+
+        const dataFeriado = new Date(valorDataFeriado + "T00:00:00");
+        const diaFeriado = dataFeriado.getDate();
+        const mesFeriado = dataFeriado.getMonth() + 1;
+
+        let feriadoIgual = false;
+
+        for(let i = 0; i < listaFeriados.length; i++) {
+            if(diaFeriado === listaFeriados[i].dia && mesFeriado === listaFeriados[i].mes) {
+                feriadoIgual = true;
+            }            
+        }
+
+        if(!feriadoIgual) {
+            listaFeriados.push({dia: diaFeriado, mes: mesFeriado, nome_feriado: valorNomeFeriado});
+            resModal.innerHTML = `
+                <div class="container--solucao sucesso">
+                    <p>Feriado regional adicionado em nossa lista!</p>
+                </div>    
+            `;
+            return;
+        }
+        
+        resModal.innerHTML = `
+            <div class="container--solucao falha">
+                <p>Feriado já existe em nossa lista!</p>
+            </div>
+        `;
+        
     });
 });
